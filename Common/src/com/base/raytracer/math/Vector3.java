@@ -10,17 +10,17 @@ public class Vector3 {
     public static final Vector3 AXIS_Y = new Vector3(0, 1, 0);
     public static final Vector3 AXIS_Z = new Vector3(0, 0, 1);
 
-    public float x, y, z;
+    public double x, y, z;
 
     public Vector3() {
         this(0, 0, 0);
     }
 
-    public Vector3(Vector2 v, float z) {
+    public Vector3(Vector2 v, double z) {
         this(v.getX(), v.getY(), z);
     }
 
-    public Vector3(float x, Vector2 v) {
+    public Vector3(double x, Vector2 v) {
         this(x, v.getX(), v.getY());
     }
 
@@ -28,13 +28,13 @@ public class Vector3 {
         this(v.getX(), v.getY(), v.getZ());
     }
 
-    public Vector3(float x, float y, float z) {
+    public Vector3(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Vector3 add(float x, float y, float z) {
+    public Vector3 add(double x, double y, double z) {
         return new Vector3(this.x + x, this.y + y, this.z + z);
     }
 
@@ -42,7 +42,7 @@ public class Vector3 {
         return add(v.x, v.y, v.z);
     }
 
-    public Vector3 subtract(float x, float y, float z) {
+    public Vector3 subtract(double x, double y, double z) {
         return add(-x, -y, -z);
     }
 
@@ -50,11 +50,11 @@ public class Vector3 {
         return add(-v.x, -v.y, -v.z);
     }
 
-    public Vector3 scale(float sx, float sy, float sz) {
+    public Vector3 scale(double sx, double sy, double sz) {
         return new Vector3(x * sx, y * sy, z * sz);
     }
 
-    public Vector3 scale(float s) {
+    public Vector3 scale(double s) {
         return scale(s, s, s);
     }
 
@@ -62,16 +62,16 @@ public class Vector3 {
         return cross(v.x, v.y, v.z);
     }
 
-    public Vector3 cross(float vx, float vy, float vz) {
-        float x = this.x * vz - this.z * vy;
-        float y = this.z * vx - this.x * vz;
-        float z = this.x * vy - this.y * vx;
+    public Vector3 cross(double vx, double vy, double vz) {
+        double x = this.x * vz - this.z * vy;
+        double y = this.z * vx - this.x * vz;
+        double z = this.x * vy - this.y * vx;
 
         return new Vector3(x, y, z);
     }
 
     public Vector3 normalize() {
-        float l = length();
+        double l = length();
 
         return new Vector3(x / l, y / l, z / l);
     }
@@ -80,50 +80,50 @@ public class Vector3 {
         return new Vector3(-x, -y, -z);
     }
 
-    public float dot(Vector3 v) {
+    public double dot(Vector3 v) {
         return x * v.x + y * v.y + z * v.z;
     }
 
-    public float lengthSquared() {
+    public double lengthSquared() {
         return x * x + y * y + z * z;
     }
 
-    public float length() {
-        return (float) Math.sqrt(lengthSquared());
+    public double length() {
+        return (double) Math.sqrt(lengthSquared());
     }
 
     public Vector3 copy() {
         return new Vector3(this);
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public Vector3 setX(float x) {
+    public Vector3 setX(double x) {
         this.x = x;
         return this;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public Vector3 setY(float y) {
+    public Vector3 setY(double y) {
         this.y = y;
         return this;
     }
 
-    public float getZ() {
+    public double getZ() {
         return z;
     }
 
-    public Vector3 setZ(float z) {
+    public Vector3 setZ(double z) {
         this.z = z;
         return this;
     }
 
-    public Vector3 set(float x, float y, float z) {
+    public Vector3 set(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -132,29 +132,29 @@ public class Vector3 {
     }
 
     /* Swizzling */
-    public float getR() {
+    public double getR() {
         return x;
     }
 
-    public Vector3 setR(float r) {
+    public Vector3 setR(double r) {
         x = r;
         return this;
     }
 
-    public float getG() {
+    public double getG() {
         return y;
     }
 
-    public Vector3 setG(float g) {
+    public Vector3 setG(double g) {
         y = g;
         return this;
     }
 
-    public float getB() {
+    public double getB() {
         return z;
     }
 
-    public Vector3 setB(float b) {
+    public Vector3 setB(double b) {
         z = b;
         return this;
     }
@@ -178,18 +178,23 @@ public class Vector3 {
 
         Vector3 vector3 = (Vector3) o;
 
-        if (Float.compare(vector3.x, x) != 0) return false;
-        if (Float.compare(vector3.y, y) != 0) return false;
-        if (Float.compare(vector3.z, z) != 0) return false;
+        if (Double.compare(vector3.x, x) != 0) return false;
+        if (Double.compare(vector3.y, y) != 0) return false;
+        if (Double.compare(vector3.z, z) != 0) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
-        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
-        result = 31 * result + (z != +0.0f ? Float.floatToIntBits(z) : 0);
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 

@@ -5,10 +5,10 @@ package com.base.raytracer.math;
  *         Date: 2014.12.22.
  */
 public class Matrix3 {
-    private float[][] m;
+    private double[][] m;
 
     public Matrix3() {
-        m = new float[3][3];
+        m = new double[3][3];
         initIdentity();
     }
 
@@ -64,7 +64,7 @@ public class Matrix3 {
     }
 
     public Matrix3 multiply(Matrix3 m) {
-        float[][] temp = new float[3][3];
+        double[][] temp = new double[3][3];
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -80,7 +80,7 @@ public class Matrix3 {
     }
 
     public Matrix3 transpose() {
-        float[][] temp = new float[3][3];
+        double[][] temp = new double[3][3];
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -103,11 +103,11 @@ public class Matrix3 {
         return new Matrix3(this);
     }
 
-    public float get(int x, int y) {
+    public double get(int x, int y) {
         return m[x][y];
     }
 
-    public Matrix3 set(int x, int j, float val) {
+    public Matrix3 set(int x, int j, double val) {
         m[x][j] = val;
 
         return this;

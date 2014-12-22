@@ -11,13 +11,13 @@ public class Vector2 implements Serializable {
     public static final Vector2 AXIS_X = new Vector2(1, 0);
     public static final Vector2 AXIS_Y = new Vector2(0, 1);
 
-    public float x, y;
+    public double x, y;
 
     public Vector2() {
         this(0, 0);
     }
 
-    public Vector2(float x, float y) {
+    public Vector2(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -27,19 +27,19 @@ public class Vector2 implements Serializable {
         y = v.y;
     }
 
-    public float lengthSquared() {
+    public double lengthSquared() {
         return x * x + y * y;
     }
 
-    public float length() {
-        return (float) Math.sqrt(lengthSquared());
+    public double length() {
+        return (double) Math.sqrt(lengthSquared());
     }
 
     public Vector2 copy() {
         return new Vector2(this);
     }
 
-    public Vector2 add(float x, float y) {
+    public Vector2 add(double x, double y) {
         return new Vector2(this.x + x, this.y + y);
     }
 
@@ -47,7 +47,7 @@ public class Vector2 implements Serializable {
         return add(v.x, v.y);
     }
 
-    public Vector2 subtract(float x, float y) {
+    public Vector2 subtract(double x, double y) {
         return add(-x, -y);
     }
 
@@ -55,24 +55,24 @@ public class Vector2 implements Serializable {
         return add(-v.x, -v.y);
     }
 
-    public Vector2 scale(float s) {
+    public Vector2 scale(double s) {
         return scale(s, s);
     }
 
-    public Vector2 scale(float sx, float sy) {
+    public Vector2 scale(double sx, double sy) {
         return new Vector2(x * sx, y * sy);
     }
 
-    public float dot(Vector2 v) {
+    public double dot(Vector2 v) {
         return dot(v.x, v.y);
     }
 
-    public float dot(float x, float y) {
+    public double dot(double x, double y) {
         return this.x * x + this.y * y;
     }
 
     public Vector2 normalize() {
-        float l = length();
+        double l = length();
 
         return new Vector2(x / l, y / l);
     }
@@ -81,23 +81,23 @@ public class Vector2 implements Serializable {
         return new Vector2(-x, -y);
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public void set(float x, float y) {
+    public void set(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -109,16 +109,20 @@ public class Vector2 implements Serializable {
 
         Vector2 vector2 = (Vector2) o;
 
-        if (Float.compare(vector2.x, x) != 0) return false;
-        if (Float.compare(vector2.y, y) != 0) return false;
+        if (Double.compare(vector2.x, x) != 0) return false;
+        if (Double.compare(vector2.y, y) != 0) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
-        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 

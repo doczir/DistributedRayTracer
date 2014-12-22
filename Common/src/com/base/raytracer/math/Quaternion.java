@@ -5,21 +5,21 @@ package com.base.raytracer.math;
  *         Date: 2014.12.22.
  */
 public class Quaternion {
-    public float x;
-    public float y;
-    public float z;
-    public float w;
+    public double x;
+    public double y;
+    public double z;
+    public double w;
 
     public Quaternion() {
         this(0, 0, 0, 1);
     }
 
-    public Quaternion(Vector3 axis, float angle) {
-        angle = (float) Math.toRadians(angle) * 0.5f;
+    public Quaternion(Vector3 axis, double angle) {
+        angle = Math.toRadians(angle) * 0.5f;
         axis = axis.normalize();
 
-        float sinAngle = (float) Math.sin(angle);
-        float cosAngle = (float) Math.cos(angle);
+        double sinAngle = Math.sin(angle);
+        double cosAngle = Math.cos(angle);
 
         x = axis.x * sinAngle;
         y = axis.y * sinAngle;
@@ -27,17 +27,17 @@ public class Quaternion {
         w = cosAngle;
     }
 
-    public Quaternion(float pitch, float yaw, float roll) {
-        pitch = (float) Math.toRadians(pitch) * 0.5f;
-        yaw = (float) Math.toRadians(yaw) * 0.5f;
-        roll = (float) Math.toRadians(roll) * 0.5f;
+    public Quaternion(double pitch, double yaw, double roll) {
+        pitch = Math.toRadians(pitch) * 0.5f;
+        yaw = Math.toRadians(yaw) * 0.5f;
+        roll = Math.toRadians(roll) * 0.5f;
 
-        float sinP = (float) Math.sin(pitch);
-        float sinY = (float) Math.sin(yaw);
-        float sinR = (float) Math.sin(roll);
-        float cosP = (float) Math.cos(pitch);
-        float cosY = (float) Math.cos(yaw);
-        float cosR = (float) Math.cos(roll);
+        double sinP = Math.sin(pitch);
+        double sinY = Math.sin(yaw);
+        double sinR = Math.sin(roll);
+        double cosP = Math.cos(pitch);
+        double cosY = Math.cos(yaw);
+        double cosR = Math.cos(roll);
 
         x = sinR * cosP * cosY - cosR * sinP * sinY;
         y = cosR * sinP * cosY + sinR * cosP * sinY;
@@ -45,14 +45,14 @@ public class Quaternion {
         w = cosR * cosP * cosY + sinR * sinP * sinY;
     }
 
-    public Quaternion(float x, float y, float z, float w) {
+    public Quaternion(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Quaternion add(float x, float y, float z, float w) {
+    public Quaternion add(double x, double y, double z, double w) {
         return new Quaternion(this.x + x, this.y + y, this.z + z, this.w + w);
     }
 
@@ -60,7 +60,7 @@ public class Quaternion {
         return add(q.x, q.y, q.z, q.w);
     }
 
-    public Quaternion subtract(float x, float y, float z, float w) {
+    public Quaternion subtract(double x, double y, double z, double w) {
         return add(-x, -y, -z, -w);
     }
 
@@ -69,7 +69,7 @@ public class Quaternion {
     }
 
     public Quaternion normalize() {
-        float length = length();
+        double length = length();
 
         return new Quaternion(x / length, y / length, z / length, w / length);
     }
@@ -79,10 +79,10 @@ public class Quaternion {
     }
 
     public Quaternion multiply(Quaternion q) {
-        float nx = w * q.x + x * q.w + y * q.z - z * q.y;
-        float ny = w * q.y + y * q.w + z * q.x - x * q.z;
-        float nz = w * q.z + z * q.w + x * q.y - y * q.x;
-        float nw = w * q.w - x * q.x - y * q.y - z * q.z;
+        double nx = w * q.x + x * q.w + y * q.z - z * q.y;
+        double ny = w * q.y + y * q.w + z * q.x - x * q.z;
+        double nz = w * q.z + z * q.w + x * q.y - y * q.x;
+        double nw = w * q.w - x * q.x - y * q.y - z * q.z;
 
         return new Quaternion(nx, ny, nz, nw).normalize();
     }
@@ -103,43 +103,43 @@ public class Quaternion {
         return new Quaternion(x, y, z, w);
     }
 
-    public float lengthSquared() {
+    public double lengthSquared() {
         return x * x + y * y + z * z + w * w;
     }
 
-    public float length() {
-        return (float) Math.sqrt(lengthSquared());
+    public double length() {
+        return Math.sqrt(lengthSquared());
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public float getZ() {
+    public double getZ() {
         return z;
     }
 
-    public void setZ(float z) {
+    public void setZ(double z) {
         this.z = z;
     }
 
-    public float getW() {
+    public double getW() {
         return w;
     }
 
-    public void setW(float w) {
+    public void setW(double w) {
         this.w = w;
     }
 }

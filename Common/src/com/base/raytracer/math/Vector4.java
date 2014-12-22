@@ -5,29 +5,29 @@ package com.base.raytracer.math;
  *         Date: 2014.12.22.
  */
 public class Vector4 {
-    public float x, y, z, w;
+    public double x, y, z, w;
 
     public Vector4() {
         this(0, 0, 0, 0);
     }
 
-    public Vector4(Vector2 v, float z, float w) {
+    public Vector4(Vector2 v, double z, double w) {
         this(v.getX(), v.getY(), z, w);
     }
 
-    public Vector4(float x, Vector2 v, float w) {
+    public Vector4(double x, Vector2 v, double w) {
         this(x, v.getX(), v.getY(), w);
     }
 
-    public Vector4(float x, float y, Vector2 v) {
+    public Vector4(double x, double y, Vector2 v) {
         this(x, y, v.getX(), v.getY());
     }
 
-    public Vector4(Vector3 v, float w) {
+    public Vector4(Vector3 v, double w) {
         this(v.getX(), v.getY(), v.getZ(), w);
     }
 
-    public Vector4(float x, Vector3 v) {
+    public Vector4(double x, Vector3 v) {
         this(x, v.getX(), v.getY(), v.getZ());
     }
 
@@ -35,14 +35,14 @@ public class Vector4 {
         this(v.x, v.y, v.z, v.w);
     }
 
-    public Vector4(float x, float y, float z, float w) {
+    public Vector4(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
     }
 
-    public Vector4 add(float x, float y, float z, float w) {
+    public Vector4 add(double x, double y, double z, double w) {
         return new Vector4(this.x + x, this.y + y, this.z + z, this.w + w);
     }
 
@@ -50,7 +50,7 @@ public class Vector4 {
         return add(v.x, v.y, v.z, v.w);
     }
 
-    public Vector4 subtract(float x, float y, float z, float w) {
+    public Vector4 subtract(double x, double y, double z, double w) {
         return add(-x, -y, -z, -w);
     }
 
@@ -58,28 +58,28 @@ public class Vector4 {
         return add(-v.x, -v.y, -v.z, -v.w);
     }
 
-    public Vector4 scale(float s) {
+    public Vector4 scale(double s) {
         return scale(s, s, s, s);
     }
 
-    public Vector4 scale(float sx, float sy, float sz, float sw) {
+    public Vector4 scale(double sx, double sy, double sz, double sw) {
         return new Vector4(x * sx, y * sy, z * sz, w * sw);
     }
 
-    public float dot(Vector4 v) {
+    public double dot(Vector4 v) {
         return x * v.x + y * v.y + z * v.z + w * v.w;
     }
 
-    public float lengthSquared() {
+    public double lengthSquared() {
         return x * x + y * y + z * z + w * w;
     }
 
-    public float length() {
-        return (float) Math.sqrt(lengthSquared());
+    public double length() {
+        return (double) Math.sqrt(lengthSquared());
     }
 
     public Vector4 normalize() {
-        float l = length();
+        double l = length();
 
         return new Vector4(x / l, y / l, z / l, w / l);
     }
@@ -96,75 +96,75 @@ public class Vector4 {
         return new Vector4(this);
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public Vector4 setX(float x) {
+    public Vector4 setX(double x) {
         this.x = x;
         return this;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public Vector4 setY(float y) {
+    public Vector4 setY(double y) {
         this.y = y;
         return this;
     }
 
-    public float getZ() {
+    public double getZ() {
         return z;
     }
 
-    public Vector4 setZ(float z) {
+    public Vector4 setZ(double z) {
         this.z = z;
         return this;
     }
 
-    public float getW() {
+    public double getW() {
         return w;
     }
 
-    public Vector4 setW(float w) {
+    public Vector4 setW(double w) {
         this.w = w;
         return this;
     }
 
     /* Swizzling */
-    public float getR() {
+    public double getR() {
         return x;
     }
 
-    public Vector4 setR(float r) {
+    public Vector4 setR(double r) {
         x = r;
         return this;
     }
 
-    public float getG() {
+    public double getG() {
         return y;
     }
 
-    public Vector4 setG(float g) {
+    public Vector4 setG(double g) {
         y = g;
         return this;
     }
 
-    public float getB() {
+    public double getB() {
         return z;
     }
 
-    public Vector4 setB(float b) {
+    public Vector4 setB(double b) {
         z = b;
         return this;
     }
 
-    public float getA() {
+    public double getA() {
         return w;
     }
 
-    public Vector4 setA(float a) {
+    public Vector4 setA(double a) {
         w = a;
         return this;
     }
@@ -177,7 +177,6 @@ public class Vector4 {
         return new Vector2(y, z);
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -185,20 +184,26 @@ public class Vector4 {
 
         Vector4 vector4 = (Vector4) o;
 
-        if (Float.compare(vector4.w, w) != 0) return false;
-        if (Float.compare(vector4.x, x) != 0) return false;
-        if (Float.compare(vector4.y, y) != 0) return false;
-        if (Float.compare(vector4.z, z) != 0) return false;
+        if (Double.compare(vector4.w, w) != 0) return false;
+        if (Double.compare(vector4.x, x) != 0) return false;
+        if (Double.compare(vector4.y, y) != 0) return false;
+        if (Double.compare(vector4.z, z) != 0) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
-        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
-        result = 31 * result + (z != +0.0f ? Float.floatToIntBits(z) : 0);
-        result = 31 * result + (w != +0.0f ? Float.floatToIntBits(w) : 0);
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(w);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
