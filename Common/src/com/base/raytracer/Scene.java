@@ -11,6 +11,16 @@ import java.io.Serializable;
  */
 public abstract class Scene implements Serializable {
 
+    private Camera camera;
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
     public abstract HitInfo intersect(Ray r);
 
     public abstract void addPrimitive(Primitive p);

@@ -3,6 +3,8 @@ package com.base.raytracer;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.base.raytracer.actors.Master;
+import com.base.raytracer.materials.DiffuseMaterial;
+import com.base.raytracer.math.HDRColor;
 import com.base.raytracer.math.Vector3;
 import com.base.raytracer.messages.RenderScene;
 import com.base.raytracer.primitives.Sphere;
@@ -65,7 +67,8 @@ public class Main extends JFrame {
 
     private void initializeScene() {
         scene = new SimpleScene();
-        scene.addPrimitive(new Sphere(new Vector3(0, 0, -1), 0.25));
+        scene.addPrimitive(new Sphere(new DiffuseMaterial(new HDRColor(1, 0, 0)), new Vector3(0, 0, -2), 0.25));
+        scene.setCamera(new Camera(70, width, height, new Vector3(0, 0, 1), Vector3.ZERO, Vector3.AXIS_Y));
     }
 
     private void initializeSystem() {

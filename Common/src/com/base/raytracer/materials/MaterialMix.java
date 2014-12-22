@@ -35,9 +35,7 @@ public class MaterialMix extends Material {
     }
 
     private HDRColor add(HDRColor c1, HDRColor c2) {
-        return new HDRColor(c1.getR() + c2.getR(),
-                c1.getG() + c2.getG(),
-                c1.getB() + c2.getB());
+        return c1.add(c2);
     }
 
     private HDRColor mix(HDRColor c1, HDRColor c2) {

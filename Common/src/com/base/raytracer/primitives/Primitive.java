@@ -16,6 +16,10 @@ public abstract class Primitive implements Intersectable, Serializable {
     protected Transform transform;
     protected Material  material;
 
+    protected Primitive(Material material) {
+        this.material = material;
+    }
+
     public Material getMaterial() {
         return material;
     }

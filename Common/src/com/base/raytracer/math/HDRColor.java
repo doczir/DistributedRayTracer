@@ -40,4 +40,8 @@ public class HDRColor implements Serializable {
     public float[] getValue() {
         return new float[]{r, g, b};
     }
+
+    public HDRColor add(HDRColor other) {
+        return new HDRColor(r + other.r, g + other.g, b + other.b);
+    }
 }

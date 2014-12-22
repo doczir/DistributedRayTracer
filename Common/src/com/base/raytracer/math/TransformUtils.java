@@ -30,13 +30,13 @@ public final class TransformUtils {
         return result;
     }
 
-    public static Matrix4 createRotation(Vector3 axis, float angle) {
+    public static Matrix4 createRotation(Vector3 axis, double angle) {
         assert axis != Vector3.ZERO;
 
         Matrix4 result = tempMat.initIdentity();
 
-        float c = (float) Math.cos(angle);
-        float s = (float) Math.sin(angle);
+        double c = Math.cos(angle);
+        double s = Math.sin(angle);
 
         Vector3 v = axis.normalize();
 
@@ -55,7 +55,7 @@ public final class TransformUtils {
         return result;
     }
 
-    public static Matrix4 createOrtho2d(float left, float right, float bottom, float top, float zNear, float zFar) {
+    public static Matrix4 createOrtho2d(double left, double right, double bottom, double top, double zNear, double zFar) {
         Matrix4 result = tempMat.initZero();
 
         result.set(0, 0, 2 / (right - left))
@@ -69,7 +69,7 @@ public final class TransformUtils {
         return result;
     }
 
-    public static Matrix4 createFrustum(float left, float right, float bottom, float top, float zNear, float zFar) {
+    public static Matrix4 createFrustum(double left, double right, double bottom, double top, double zNear, double zFar) {
         assert zFar > zNear;
 
         Matrix4 result = tempMat.initZero();
@@ -85,12 +85,12 @@ public final class TransformUtils {
         return result;
     }
 
-    public static Matrix4 createPerspective(float fovy, float aspect, float zNear, float zFar) {
+    public static Matrix4 createPerspective(double fovy, double aspect, double zNear, double zFar) {
         assert zFar > zNear;
 
         Matrix4 result = tempMat.initZero();
 
-        float tanHalfFovy = (float) Math.tan(Math.toRadians(fovy) / 2);
+        double tanHalfFovy = Math.tan(Math.toRadians(fovy) / 2);
 
         result.set(0, 0, 1 / (aspect * tanHalfFovy))
                 .set(1, 1, 1 / tanHalfFovy)

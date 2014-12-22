@@ -3,15 +3,17 @@ package com.base.raytracer.actors;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.japi.pf.ReceiveBuilder;
+import com.base.raytracer.HitInfo;
 import com.base.raytracer.Scene;
 import com.base.raytracer.math.HDRColor;
 import com.base.raytracer.messages.Pixel;
 import com.base.raytracer.messages.PixelDone;
 import com.base.raytracer.messages.RenderTask;
+import com.base.raytracer.messages.RenderTask.ConcreteTask;
 import com.base.raytracer.messages.RenderTaskDone;
+import com.base.raytracer.primitives.Ray;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * @author Róbert Dóczi
@@ -24,15 +26,26 @@ public class RenderActor extends AbstractActor {
     public RenderActor(Scene scene) {
         this.scene = scene;
 
-        Random random = new Random();
-
         receive(ReceiveBuilder
                 .match(RenderTask.class, renderTask -> {
                     ArrayList<Pixel> pixels = new ArrayList<>();
                     while (renderTask.hasNext()) {
+                        ConcreteTask task = renderTask.next();
 
-                        Thread.sleep(1);
-                        pixels.add(new Pixel(renderTask.getId(), renderTask.next(), new HDRColor(random.nextFloat(), random.nextFloat(), random.nextFloat())));
+                        //Thread.sleep(1);
+
+                        Ray ray = this.scene.getCamera().getRay(task.pos);
+
+                        HitInfo intersect = this.scene.intersect(ray);
+
+                        HDRColor color;
+
+                        if (intersect.isIntersect())
+                            color = intersect.getPrimitive().getMaterial().getColor();
+                        else
+                            color = new HDRColor();
+
+                        pixels.add(new Pixel(renderTask.getId(), task.idx, color));
 
                         if (pixels.size() > 500) {
                             sender().tell(new PixelDone(pixels), self());

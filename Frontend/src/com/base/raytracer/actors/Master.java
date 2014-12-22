@@ -9,6 +9,7 @@ import com.base.raytracer.Scene;
 import com.base.raytracer.math.HDRColor;
 import com.base.raytracer.math.Vector2;
 import com.base.raytracer.messages.*;
+import com.base.raytracer.messages.Shutdown;
 import com.google.common.base.Stopwatch;
 import scala.concurrent.duration.Duration;
 
@@ -75,8 +76,8 @@ public class Master extends AbstractActor {
 
                     if (pixelsDone == width * height) {
                         System.out.println(sw);
-//                        backends.forEach(backend -> backend.getRouter().tell(new Shutdown(), self()));
-//                        getContext().system().shutdown();
+                        backends.forEach(backend -> backend.getRouter().tell(new Shutdown(), self()));
+                        getContext().system().shutdown();
                     }
                 })).build());
     }
@@ -86,6 +87,7 @@ public class Master extends AbstractActor {
     }
 
     private void initializeBackend(Backend backend) {
+        backends.add(backend);
         for (int i = 0; i < backend.getNrOfWorkers(); i++) {
             sendTaskIfApplicable(backend.getRouter());
         }

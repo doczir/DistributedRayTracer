@@ -1,6 +1,7 @@
 package com.base.raytracer.primitives;
 
 import com.base.raytracer.HitInfo;
+import com.base.raytracer.materials.Material;
 import com.base.raytracer.math.AABB;
 import com.base.raytracer.math.Transform;
 import com.base.raytracer.math.Vector3;
@@ -15,7 +16,8 @@ public class Sphere extends Primitive {
 
     private double rad;
 
-    public Sphere(Vector3 v0, double rad) {
+    public Sphere(Material material, Vector3 v0, double rad) {
+        super(material);
         this.transform = new Transform();
         this.transform.setPos(v0);
         this.rad = rad;
@@ -47,10 +49,10 @@ public class Sphere extends Primitive {
 
         t = b - det;
         if (t > EPSILON)
-            return new HitInfo(t);
+            return new HitInfo(t, this);
         t = b + det;
         if (t > EPSILON)
-            return new HitInfo(t);
+            return new HitInfo(t, this);
 
         return HitInfo.NO_HIT;
     }

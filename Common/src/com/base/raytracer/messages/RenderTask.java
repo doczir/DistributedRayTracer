@@ -43,8 +43,8 @@ public class RenderTask implements Serializable {
 
     }
 
-    public int next() {
-        int ret = (int) (current.y * w + current.x);
+    public ConcreteTask next() {
+        ConcreteTask ret = new ConcreteTask((int) (current.y * w + current.x), current.copy());
         if (current.x != to.x) {
             current = current.add(1, 0);
         } else {
@@ -52,5 +52,15 @@ public class RenderTask implements Serializable {
             current.x = from.x;
         }
         return ret;
+    }
+
+    public static class ConcreteTask {
+        public int     idx;
+        public Vector2 pos;
+
+        public ConcreteTask(int idx, Vector2 pos) {
+            this.idx = idx;
+            this.pos = pos;
+        }
     }
 }

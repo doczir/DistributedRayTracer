@@ -65,7 +65,7 @@ public class Vector3 implements Serializable {
     }
 
     public Vector3 cross(double vx, double vy, double vz) {
-        double x = this.x * vz - this.z * vy;
+        double x = this.y * vz - this.z * vy;
         double y = this.z * vx - this.x * vz;
         double z = this.x * vy - this.y * vx;
 
