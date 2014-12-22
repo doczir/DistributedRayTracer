@@ -23,7 +23,6 @@ public class RenderActor extends AbstractActor {
                 .match(RenderTask.class, renderTask -> {
                     ArrayList<Pixel> pixels = new ArrayList<>();
                     while (renderTask.hasNext()) {
-                        Thread.sleep(1);
                         pixels.add(new Pixel(renderTask.next(), new HDRColor(0.0f, 1.0f, 1.0f)));
 
                         if (pixels.size() > 500) {

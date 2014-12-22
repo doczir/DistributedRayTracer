@@ -8,19 +8,19 @@ import com.base.raytracer.math.Vector3;
  */
 public class Ray {
 
-    Vector3 dir;
-    Vector3 v0;
+    private Vector3 dir;
+    private Vector3 o;
 
-    public Ray(Vector3 dir, Vector3 v0) {
+    public Ray(Vector3 dir, Vector3 o) {
         this.dir = dir;
-        this.v0 = v0;
+        this.o = o;
     }
 
     public Vector3 getDir() {
         return dir;
     }
 
-    public Vector3 getV0() {
-        return v0;
+    public Vector3 getO() {
+        return o;
     }
 }

@@ -10,15 +10,15 @@ import com.base.raytracer.math.Vector3;
  */
 public class Sphere extends Primitive {
 
-    private float r;
+    private float rad;
 
-    public Sphere(Vector3 v0, float r) {
+    public Sphere(Vector3 v0, float rad) {
         this.transform.setPos(v0);
-        this.r = r;
+        this.rad = rad;
     }
 
     public float getRadius() {
-        return r;
+        return rad;
     }
 
     public Vector3 getCenter() {
@@ -32,10 +32,11 @@ public class Sphere extends Primitive {
 
     @Override
     public HitInfo intersect(Ray r) {
-        Vector3 v0 = r.getV0();
-        Vector3 c = getCenter();
-        Vector3 vpc = c.copy().subtract(v0);
+        Vector3 op = getCenter().copy().subtract(r.getO());
+        double t = 0;
+        double b = op.dot(r.getDir());
 
+        double det = b * b - op.dot(op) + rad + rad;
 
         return null;
     }
