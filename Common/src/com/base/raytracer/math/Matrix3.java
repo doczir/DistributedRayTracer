@@ -1,10 +1,12 @@
 package com.base.raytracer.math;
 
+import java.io.Serializable;
+
 /**
  * @author Róbert Dóczi
  *         Date: 2014.12.22.
  */
-public class Matrix3 {
+public class Matrix3 implements Serializable {
     private double[][] m;
 
     public Matrix3() {

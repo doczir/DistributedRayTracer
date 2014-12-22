@@ -1,10 +1,12 @@
 package com.base.raytracer.math;
 
+import java.io.Serializable;
+
 /**
  * @author Róbert Dóczi
  *         Date: 2014.12.22.
  */
-public class Quaternion {
+public class Quaternion implements Serializable {
     public double x;
     public double y;
     public double z;

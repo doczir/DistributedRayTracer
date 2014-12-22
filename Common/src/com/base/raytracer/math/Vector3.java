@@ -1,10 +1,12 @@
 package com.base.raytracer.math;
 
+import java.io.Serializable;
+
 /**
  * @author Róbert Dóczi
  *         Date: 2014.12.22.
  */
-public class Vector3 {
+public class Vector3 implements Serializable {
     public static final Vector3 ZERO   = new Vector3(0, 0, 0);
     public static final Vector3 AXIS_X = new Vector3(1, 0, 0);
     public static final Vector3 AXIS_Y = new Vector3(0, 1, 0);

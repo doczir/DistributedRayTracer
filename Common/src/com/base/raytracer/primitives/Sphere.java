@@ -2,6 +2,7 @@ package com.base.raytracer.primitives;
 
 import com.base.raytracer.HitInfo;
 import com.base.raytracer.math.AABB;
+import com.base.raytracer.math.Transform;
 import com.base.raytracer.math.Vector3;
 
 /**
@@ -10,14 +11,17 @@ import com.base.raytracer.math.Vector3;
  */
 public class Sphere extends Primitive {
 
-    private float rad;
+    private static double EPSILON = 1e-4;
 
-    public Sphere(Vector3 v0, float rad) {
+    private double rad;
+
+    public Sphere(Vector3 v0, double rad) {
+        this.transform = new Transform();
         this.transform.setPos(v0);
         this.rad = rad;
     }
 
-    public float getRadius() {
+    public double getRadius() {
         return rad;
     }
 
@@ -38,6 +42,16 @@ public class Sphere extends Primitive {
 
         double det = b * b - op.dot(op) + rad + rad;
 
-        return null;
+        if (det < 0) return HitInfo.NO_HIT;
+        else det = Math.sqrt(det);
+
+        t = b - det;
+        if (t > EPSILON)
+            return new HitInfo(t);
+        t = b + det;
+        if (t > EPSILON)
+            return new HitInfo(t);
+
+        return HitInfo.NO_HIT;
     }
 }

@@ -3,6 +3,7 @@ package com.base.raytracer.messages;
 import com.base.raytracer.math.Vector2;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -12,6 +13,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class RenderTask implements Serializable {
 
+    private UUID id;
+
     private Vector2 from;
     private Vector2 to;
     private int     w;
@@ -19,8 +22,9 @@ public class RenderTask implements Serializable {
     private Vector2 end;
     private Vector2 current;
 
-    public RenderTask(Vector2 from, Vector2 to, int w) {
+    public RenderTask(UUID id, Vector2 from, Vector2 to, int w) {
         checkArgument(from.x < to.x && from.y < to.y, "Render task range invalid.");
+        this.id = id;
         this.from = from;
         this.to = to;
         this.w = w;
@@ -30,10 +34,13 @@ public class RenderTask implements Serializable {
         end.x = from.x;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public boolean hasNext() {
-        if (!end.equals(current))
-            return true;
-        else return false;
+        return !end.equals(current);
+
     }
 
     public int next() {

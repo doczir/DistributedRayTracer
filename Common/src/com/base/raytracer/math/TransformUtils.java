@@ -133,15 +133,15 @@ public final class TransformUtils {
 
         Matrix4 result = tempMat.initIdentity();
 
-        float x2 = q.x * q.x;
-        float y2 = q.y * q.y;
-        float z2 = q.z * q.z;
-        float xy = q.x * q.y;
-        float xz = q.x * q.z;
-        float yz = q.y * q.z;
-        float wx = q.w * q.x;
-        float wy = q.w * q.y;
-        float wz = q.w * q.z;
+        double x2 = q.x * q.x;
+        double y2 = q.y * q.y;
+        double z2 = q.z * q.z;
+        double xy = q.x * q.y;
+        double xz = q.x * q.z;
+        double yz = q.y * q.z;
+        double wx = q.w * q.x;
+        double wy = q.w * q.y;
+        double wz = q.w * q.z;
 
         result.set(0, 0, 1.0f - 2.0f * (y2 + z2))
                 .set(0, 1, 2.0f * (xy - wz))

@@ -1,10 +1,12 @@
 package com.base.raytracer.math;
 
+import java.io.Serializable;
+
 /**
  * @author Róbert Dóczi
  *         Date: 2014.12.22.
  */
-public class Vector4 {
+public class Vector4 implements Serializable {
     public double x, y, z, w;
 
     public Vector4() {

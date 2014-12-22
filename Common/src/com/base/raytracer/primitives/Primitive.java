@@ -5,11 +5,13 @@ import com.base.raytracer.materials.Material;
 import com.base.raytracer.math.AABB;
 import com.base.raytracer.math.Transform;
 
+import java.io.Serializable;
+
 /**
  * @author Róbert Dóczi
  *         Date: 2014.12.22.
  */
-public abstract class Primitive implements Intersectable {
+public abstract class Primitive implements Intersectable, Serializable {
 
     protected Transform transform;
     protected Material  material;

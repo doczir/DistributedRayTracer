@@ -1,10 +1,12 @@
 package com.base.raytracer.math;
 
+import java.io.Serializable;
+
 /**
  * @author Róbert Dóczi
  *         Date: 2014.12.22.
  */
-public class Transform {
+public class Transform implements Serializable {
 
     Vector3    pos;
     Quaternion rot;

@@ -3,7 +3,9 @@ package com.base.raytracer;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.base.raytracer.actors.Master;
+import com.base.raytracer.math.Vector3;
 import com.base.raytracer.messages.RenderScene;
+import com.base.raytracer.primitives.Sphere;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -62,7 +64,8 @@ public class Main extends JFrame {
     }
 
     private void initializeScene() {
-        scene = new Scene();
+        scene = new SimpleScene();
+        scene.addPrimitive(new Sphere(new Vector3(0, 0, -1), 0.25));
     }
 
     private void initializeSystem() {
@@ -73,9 +76,9 @@ public class Main extends JFrame {
                 .withFallback(ConfigFactory.load());
 
         ActorSystem system = ActorSystem.create("RenderCluster", config);
-        ActorRef master = system.actorOf(Master.props(width, height, scene, components, ic), "frontend");
+        ActorRef master = system.actorOf(Master.props(width, height, components, ic), "frontend");
 
-        master.tell(new RenderScene(), null);
+        master.tell(new RenderScene(scene), null);
     }
 
     private void render() {
