@@ -14,11 +14,13 @@ public class Camera implements Serializable {
 
     private final int halfWidth;
     private final int halfHeight;
+    private final double ar;
     Vector3 eyePos, planePos, right, up;
 
     public Camera(double fov, int width, int height, Vector3 eye, Vector3 target, Vector3 planeUp) {
         this.halfWidth = width / 2;
         this.halfHeight = height / 2;
+        this.ar = (double) width / height;
         this.eyePos = eye.copy();
         this.planePos = eye.add(target.subtract(eye).normalize());
 
@@ -35,7 +37,7 @@ public class Camera implements Serializable {
                 (pos.x - halfWidth) / halfWidth,
                 (pos.y - halfHeight) / halfHeight);
 
-        Vector3 planeIntersection = planePos.add(right.scale(posOnPlane.x)).add(up.scale(posOnPlane.y));
+        Vector3 planeIntersection = planePos.add(right.scale(posOnPlane.x).scale(ar)).add(up.scale(posOnPlane.y));
 
         return new Ray(planeIntersection.subtract(eyePos).normalize(), eyePos);
     }
