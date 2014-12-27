@@ -22,6 +22,17 @@ public class MaterialMix extends Material {
     public HDRColor getColor() {
         HDRColor color1 = in1.getColor();
         HDRColor color2 = in2.getColor();
+        return doOperator(color1, color2);
+    }
+
+    @Override
+    public HDRColor getEmmission() {
+        HDRColor color1 = in1.getEmmission();
+        HDRColor color2 = in2.getEmmission();
+        return doOperator(color1, color2);
+    }
+
+    private HDRColor doOperator(HDRColor color1, HDRColor color2) {
         switch (op) {
             case ADD:
                 return add(color1, color2);

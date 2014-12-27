@@ -38,22 +38,31 @@ public class Sphere extends Primitive {
 
     @Override
     public HitInfo intersect(Ray r) {
-        Vector3 op = getCenter().copy().subtract(r.getO());
-        double t = 0;
+        Vector3 op = getCenter().subtract(r.getO());
+        double t;
         double b = op.dot(r.getDir());
 
-        double det = b * b - op.dot(op) + rad + rad;
+        double det = b * b - op.dot(op) + rad * rad;
 
         if (det < 0) return HitInfo.NO_HIT;
         else det = Math.sqrt(det);
 
         t = b - det;
-        if (t > EPSILON)
-            return new HitInfo(t, this);
+        if (t > EPSILON) {
+            return calcHitInfo(r, t);
+        }
         t = b + det;
-        if (t > EPSILON)
-            return new HitInfo(t, this);
+        if (t > EPSILON) {
+            return calcHitInfo(r, t);
+        }
 
         return HitInfo.NO_HIT;
+    }
+
+    private HitInfo calcHitInfo(Ray r, double t) {
+        Vector3 hitPoint = r.getO().add(r.getDir().normalize().scale(t));
+        Vector3 normal = hitPoint.subtract(getCenter()).normalize();
+        Vector3 orientedNormal = normal.dot(r.getDir()) < 0 ? normal : normal.scale(-1);
+        return new HitInfo(t, this, hitPoint, normal, orientedNormal);
     }
 }

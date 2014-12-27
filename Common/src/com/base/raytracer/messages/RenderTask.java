@@ -34,6 +34,18 @@ public class RenderTask implements Serializable {
         end.x = from.x;
     }
 
+    public RenderTask(RenderTask other) {
+        this.id = new UUID(other.id.getMostSignificantBits(), other.id.getLeastSignificantBits());
+
+        this.from = other.from.copy();
+        this.to = other.to.copy();
+
+        this.w = other.w;
+
+        this.end = other.end.copy();
+        this.current = other.current.copy();
+    }
+
     public UUID getId() {
         return id;
     }
@@ -52,6 +64,10 @@ public class RenderTask implements Serializable {
             current.x = from.x;
         }
         return ret;
+    }
+
+    public RenderTask copy() {
+        return new RenderTask(this);
     }
 
     public static class ConcreteTask {

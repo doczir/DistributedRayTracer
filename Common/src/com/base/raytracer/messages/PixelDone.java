@@ -2,6 +2,7 @@ package com.base.raytracer.messages;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Róbert Dóczi
@@ -9,9 +10,9 @@ import java.util.ArrayList;
  */
 public class PixelDone implements Serializable {
 
-    private ArrayList<Pixel> pixels;
+    private List<Pixel> pixels;
 
-    public PixelDone(ArrayList<Pixel> pixels) {
+    public PixelDone(List<Pixel> pixels) {
         this.pixels = new ArrayList<>(pixels);
     }
 
@@ -19,7 +20,7 @@ public class PixelDone implements Serializable {
         pixels.add(pixel);
     }
 
-    public ArrayList<Pixel> getPixels() {
+    public List<Pixel> getPixels() {
         return pixels;
     }
 

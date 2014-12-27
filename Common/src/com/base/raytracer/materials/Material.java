@@ -9,5 +9,9 @@ import java.io.Serializable;
  *         Date: 2014.12.22.
  */
 public abstract class Material implements Serializable {
+
     public abstract HDRColor getColor();
+
+    public abstract HDRColor getEmmission();
+
 }

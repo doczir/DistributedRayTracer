@@ -14,6 +14,13 @@ public class Matrix3 implements Serializable {
         initIdentity();
     }
 
+    public Matrix3(double[] m) {
+        this.m = new double[3][3];
+        for (int i = 0; i < 3; i++) {
+            System.arraycopy(m, i * 3, this.m[i], 0, 3);
+        }
+    }
+
     public Matrix3(Matrix3 m) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {

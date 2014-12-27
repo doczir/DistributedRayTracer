@@ -35,7 +35,7 @@ public class Camera implements Serializable {
     public Ray getRay(Vector2 pos) {
         Vector2 posOnPlane = new Vector2(
                 (pos.x - halfWidth) / halfWidth,
-                (pos.y - halfHeight) / halfHeight);
+                (pos.y - halfHeight) / halfHeight * -1); // invert y cause in swing y=0 is top instead of bottom
 
         Vector3 planeIntersection = planePos.add(right.scale(posOnPlane.x).scale(ar)).add(up.scale(posOnPlane.y));
 

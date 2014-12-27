@@ -4,14 +4,16 @@ import com.base.raytracer.math.HDRColor;
 
 /**
  * @author Róbert Dóczi
- *         Date: 2014.12.22.
+ *         Date: 2014.12.27.
  */
-public class DiffuseMaterial extends Material {
+public class GlassMaterial extends Material {
 
     private HDRColor color;
+    private double   ior;
 
-    public DiffuseMaterial(HDRColor color) {
+    public GlassMaterial(HDRColor color, float ior) {
         this.color = color;
+        this.ior = ior;
     }
 
     @Override
@@ -24,4 +26,7 @@ public class DiffuseMaterial extends Material {
         return new HDRColor();
     }
 
+    public double getIor() {
+        return ior;
+    }
 }

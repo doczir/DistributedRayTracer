@@ -4,13 +4,13 @@ import com.base.raytracer.math.HDRColor;
 
 /**
  * @author Róbert Dóczi
- *         Date: 2014.12.22.
+ *         Date: 2014.12.27.
  */
-public class DiffuseMaterial extends Material {
+public class GlossyMaterial extends Material {
 
     private HDRColor color;
 
-    public DiffuseMaterial(HDRColor color) {
+    public GlossyMaterial(HDRColor color) {
         this.color = color;
     }
 
@@ -23,5 +23,4 @@ public class DiffuseMaterial extends Material {
     public HDRColor getEmmission() {
         return new HDRColor();
     }
-
 }
