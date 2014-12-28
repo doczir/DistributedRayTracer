@@ -6,16 +6,18 @@ import akka.actor.Cancellable;
 import akka.actor.Props;
 import akka.japi.pf.ReceiveBuilder;
 import com.base.raytracer.Scene;
+import com.base.raytracer.filters.Bloom;
+import com.base.raytracer.filters.Filter;
 import com.base.raytracer.math.HDRColor;
 import com.base.raytracer.math.Matrix3;
 import com.base.raytracer.math.Vector2;
-import com.base.raytracer.math.Vector3;
 import com.base.raytracer.messages.*;
 import com.base.raytracer.messages.Shutdown;
 import com.google.common.base.Stopwatch;
 import scala.concurrent.duration.Duration;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import java.util.Queue;
@@ -39,6 +41,8 @@ public class Master extends AbstractActor {
             0.0753, -0.2543, 1.1892
     });
     private final float[] raster;
+    private final BufferedImage image;
+    private final HDRColor[][]  hdrRaster;
     List<Backend>     backends;
     Queue<RenderTask> taskQueue;
     private Scene scene;
@@ -46,8 +50,10 @@ public class Master extends AbstractActor {
     private Stopwatch sw;
     private Map<UUID, Cancellable> cancellables;
 
-    public Master(int width, int height, float[] raster, Component renderFrame) {
+    public Master(int width, int height, float[] raster, BufferedImage image, Component renderFrame) {
         this.raster = raster;
+        this.image = image;
+        hdrRaster = new HDRColor[width][height];
         backends = new ArrayList<>();
         cancellables = new HashMap<>();
 
@@ -79,7 +85,13 @@ public class Master extends AbstractActor {
                 })
                 .match(RenderDone.class, renderDone -> {
 
-                    //toneMap();
+                    applyPreFilters(
+                            new Bloom(.1f, 5f, 1f, 1f, 1f)
+                    );
+                    toneMap();
+                    applyPostFilters();
+                    swapRaster();
+
                     renderFrame.repaint();
 
                     scene.setDone(true);
@@ -91,8 +103,11 @@ public class Master extends AbstractActor {
                 .match(PixelDone.class, pixelDone -> pixelDone.getPixels().forEach(pixel -> {
                     if (sw == null) sw = Stopwatch.createStarted();
                     int idx = pixel.getIdx() * 3;
-                    HDRColor color = pixel.getVal();
 
+                    HDRColor color = pixel.getVal();
+                    hdrRaster[pixel.getIdx() - pixel.getIdx() / width * width][pixel.getIdx() / width] = color;
+
+                    color = color.reinhart(scene.getExposure());
 
                     raster[idx] = color.getR();
                     raster[idx + 1] = color.getG();
@@ -104,72 +119,38 @@ public class Master extends AbstractActor {
                 })).build());
     }
 
-    public static Props props(int width, int height, float[] raster, Component renderFrame) {
-        return Props.create(Master.class, () -> new Master(width, height, raster, renderFrame));
+    public static Props props(int width, int height, float[] raster, BufferedImage image, Component renderFrame) {
+        return Props.create(Master.class, () -> new Master(width, height, raster, image, renderFrame));
+    }
+
+    private void applyPreFilters(Filter... filters) {
+        Arrays.stream(filters).forEach(filter -> filter.apply(hdrRaster));
+    }
+
+    private void applyPostFilters(Filter... filters) {
+        Arrays.stream(filters).forEach(filter -> filter.apply(hdrRaster));
+    }
+
+    private void swapRaster() {
+        for (int x = 0; x < hdrRaster.length; x++) {
+            for (int y = 0; y < hdrRaster[x].length; y++) {
+                HDRColor hdrColor = hdrRaster[x][y];
+
+                int i = y * hdrRaster.length + x;
+
+                raster[i * 3] = hdrColor.getR();
+                raster[i * 3 + 1] = hdrColor.getG();
+                raster[i * 3 + 2] = hdrColor.getB();
+            }
+        }
     }
 
     private void toneMap() {
-
-        for (int i = 0; i < raster.length; i += 3) {
-            HDRColor current = new HDRColor(raster[i], raster[i + 1], raster[i + 2]);
-            current = current.scale(2f);
-            HDRColor ret = current.div(current.add(1));
-            raster[i] = ret.getR();
-            raster[i + 1] = ret.getG();
-            raster[i + 2] = ret.getB();
+        for (int x = 0; x < hdrRaster.length; x++) {
+            for (int y = 0; y < hdrRaster[x].length; y++) {
+                hdrRaster[x][y] = hdrRaster[x][y].reinhart(scene.getExposure());
+            }
         }
-
-//        float maxLuminance = 0;
-//        float avgLuminance = 0;
-//        for (int i = 0; i < raster.length; i += 3) {
-//            float current = luminance(raster[i], raster[i + 1], raster[i + 2]);
-//            maxLuminance = Math.max(maxLuminance, current);
-//            avgLuminance += current;
-//        }
-//        avgLuminance /= raster.length / 3;
-//
-//        float lWhite = maxLuminance * maxLuminance;
-//
-//        rgb2xyz.transpose();
-//        xyz2rgb.transpose();
-//
-//        for (int i = 0; i < raster.length; i += 3) {
-//            float r = raster[i];
-//            float g = raster[i + 1];
-//            float b = raster[i + 2];
-//            float current = luminance(r, g, b);
-//            float L = (0.25f / avgLuminance) * current;
-//            float Ld = (L * (1.0f + L / lWhite)) / (1.0f + L);
-//
-//            Vector3 xyY = rgb2xyY(new Vector3(r, g, b));
-////            float Lp = (float) (xyY.x * .5f / avgLuminance);
-////            xyY.x = (Lp * (1.0f + Lp / (lWhite * lWhite))) / (1.0f + Lp);
-//            Vector3 rgb = xyY2rgb(xyY);
-//
-//            raster[i] = (float) Math.pow(rgb.getR(), 1.0 / 2.2);
-//            raster[i + 1] = (float) Math.pow(rgb.getG(), 1.0 / 2.2);
-//            raster[i + 2] = (float) Math.pow(rgb.getB(), 1.0 / 2.2);
-//        }
-    }
-
-    private float luminance(float r, float g, float b) {
-        return (0.2126f * r) + (0.7152f * g) + (0.0722f * b);
-    }
-
-    private Vector3 rgb2xyY(Vector3 rgb) {
-        Vector3 xyz = rgb2xyz.multiply(rgb);
-
-        return new Vector3(xyz.y,
-                xyz.x / (xyz.x + xyz.y + xyz.z),
-                xyz.y / (xyz.x + xyz.y + xyz.z));
-    }
-
-    private Vector3 xyY2rgb(Vector3 xyY) {
-        Vector3 xyz = new Vector3(xyY.x * xyY.y / xyY.z,
-                xyY.x,
-                xyY.x * (1 - xyY.y - xyY.z) / xyY.z);
-
-        return xyz2rgb.multiply(xyz);
     }
 
     private void initializeBackend(Backend backend) {

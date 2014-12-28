@@ -131,8 +131,10 @@ public class Main extends JFrame {
         scene.addPrimitive(new Plane(new DiffuseMaterial(new HDRColor(.8f, .8f, .8f)), new Vector3(0, 5.02, 0), new Vector3(0, -1, 0)));
 
         scene.addPrimitive(new Sphere(new EmmissiveMaterial(new HDRColor(12, 12, 12)), new Vector3(0, 105, -6), 100));
+
         scene.setCamera(new Camera(70, width, height, new Vector3(0, 0, 1), Vector3.ZERO, Vector3.AXIS_Y));
-        scene.setSamples(100);
+        scene.setExposure(3);
+        scene.setSamples(10);
     }
 
     private void initializeSystem() {
@@ -143,7 +145,7 @@ public class Main extends JFrame {
                 .withFallback(ConfigFactory.load());
 
         ActorSystem system = ActorSystem.create("RenderCluster", config);
-        master = system.actorOf(Master.props(width, height, components, ic), "frontend");
+        master = system.actorOf(Master.props(width, height, components, image, ic), "frontend");
     }
 
     private void render() {

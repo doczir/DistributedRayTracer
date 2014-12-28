@@ -61,7 +61,7 @@ public class RenderActor extends AbstractActor {
 
                         if (sample % 20 == 0) {
                             int currentSample = sample; //lambda needs final.....
-                            List<Pixel> pixels = colorSamples.entrySet().stream().map(integerHDRColorEntry -> new Pixel(renderTask.getId(), integerHDRColorEntry.getKey(), integerHDRColorEntry.getValue().scale(1.0f / currentSample).reinhart(2))).collect(Collectors.toList());
+                            List<Pixel> pixels = colorSamples.entrySet().stream().map(integerHDRColorEntry -> new Pixel(renderTask.getId(), integerHDRColorEntry.getKey(), integerHDRColorEntry.getValue().scale(1.0f / currentSample))).collect(Collectors.toList());
                             List<List<Pixel>> partition = Lists.partition(pixels, 2048);
                             for (List<Pixel> pixelList : partition) {
                                 sender().tell(new PixelDone(pixelList), self());
@@ -70,7 +70,7 @@ public class RenderActor extends AbstractActor {
                     }
 
                     int currentSample = scene.getSamples(); //lambda needs final.....
-                    List<Pixel> pixels = colorSamples.entrySet().stream().map(integerHDRColorEntry -> new Pixel(renderTask.getId(), integerHDRColorEntry.getKey(), integerHDRColorEntry.getValue().scale(1.0f / currentSample).reinhart(2))).collect(Collectors.toList());
+                    List<Pixel> pixels = colorSamples.entrySet().stream().map(integerHDRColorEntry -> new Pixel(renderTask.getId(), integerHDRColorEntry.getKey(), integerHDRColorEntry.getValue().scale(1.0f / currentSample))).collect(Collectors.toList());
                     List<List<Pixel>> partition = Lists.partition(pixels, 2048);
                     for (List<Pixel> pixelList : partition) {
                         sender().tell(new PixelDone(pixelList), self());

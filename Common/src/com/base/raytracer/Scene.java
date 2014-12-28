@@ -18,6 +18,7 @@ public abstract class Scene implements Serializable {
     private HDRColor ambient;
     private int      samples;
     private boolean  done;
+    private float exposure;
 
     public Camera getCamera() {
         return camera;
@@ -59,5 +60,13 @@ public abstract class Scene implements Serializable {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public float getExposure() {
+        return exposure;
+    }
+
+    public void setExposure(float exposure) {
+        this.exposure = exposure;
     }
 }
